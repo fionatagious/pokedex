@@ -108,10 +108,3 @@ document.querySelectorAll(".pokemon").forEach((item) => {
     { once: true }
   );
 });
-
-// play game button
-playButton.addEventListener("click", async function (e) {
-  // poke grid disappears;
-  // 4x4 grid appears, cards flipped face down
-  // playButton.disabled = true;
-});
