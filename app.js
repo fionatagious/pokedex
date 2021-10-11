@@ -1,12 +1,11 @@
 const url = "https://pokeapi.co/api/v2/pokemon/";
-const nameElem = document.getElementById("name");
-const baseXpElem = document.getElementById("basexp");
-const heightElem = document.getElementById("height");
-const weightElem = document.getElementById("weight");
-const baseStatElem = document.getElementById("stats");
+const nameElem = document.querySelector(".name");
+const baseXpElem = document.querySelector(".basexp");
+const heightElem = document.querySelector(".height");
+const weightElem = document.querySelector(".weight");
+const baseStatElem = document.querySelector(".stats");
 
 let id;
-let name;
 
 async function getPokemon() {
   try {
@@ -48,17 +47,21 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       id = str.substring(0, str.indexOf("."));
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
       const detail = await response.json();
-      name = detail.name;
+
+      let name = detail.name;
       let basexp = detail.base_experience;
       let height = detail.height;
       let weight = detail.weight;
       let baseStat = detail.stats[0].base_stat;
-      let effort = detail.stats[0].stat[0];
       nameElem.innerHTML = `Name: ${name}`;
       baseXpElem.innerHTML = `Base Experience: ${basexp}`;
       heightElem.innerHTML = `Height: ${height}`;
       weightElem.innerHTML = `Weight: ${weight}`;
       baseStatElem.innerHTML = `Base Stat: ${baseStat}`;
+
+      let detailPic = document.createElement("img");
+      detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+      document.querySelector(".poke-detail").appendChild(detailPic);
     } catch (err) {
       console.error(err);
     }
