@@ -1,9 +1,10 @@
 const url = "https://pokeapi.co/api/v2/pokemon/";
-const nameElem = document.querySelector(".name");
-const baseXpElem = document.querySelector(".basexp");
-const heightElem = document.querySelector(".height");
-const weightElem = document.querySelector(".weight");
-const baseStatElem = document.querySelector(".stats");
+const nameElem = document.getElementById("name");
+const baseXpElem = document.getElementById("basexp");
+const heightElem = document.getElementById("height");
+const weightElem = document.getElementById("weight");
+const baseStatElem = document.getElementById("stats");
+const detailPic = document.getElementById("detail-img");
 
 let id;
 
@@ -59,7 +60,6 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       weightElem.innerHTML = `Weight: ${weight}`;
       baseStatElem.innerHTML = `Base Stat: ${baseStat}`;
 
-      let detailPic = document.createElement("img");
       detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
       document.querySelector(".poke-detail").appendChild(detailPic);
     } catch (err) {
