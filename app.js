@@ -54,11 +54,11 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       let height = detail.height;
       let weight = detail.weight;
       let baseStat = detail.stats[0].base_stat;
-      nameElem.innerHTML = `Name: ${name}`;
-      baseXpElem.innerHTML = `Base Experience: ${basexp}`;
-      heightElem.innerHTML = `Height: ${height}`;
-      weightElem.innerHTML = `Weight: ${weight}`;
-      baseStatElem.innerHTML = `Base Stat: ${baseStat}`;
+      nameElem.innerHTML = `<strong>Name: </strong> ${name}`;
+      baseXpElem.innerHTML = `<strong>Base Experience: </strong>${basexp}`;
+      heightElem.innerHTML = `<strong>Height: </strong>${height}`;
+      weightElem.innerHTML = `<strong>Weight: </strong>${weight}`;
+      baseStatElem.innerHTML = `<strong>Base Stat: </strong>${baseStat}`;
 
       detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
       document.querySelector(".poke-detail").appendChild(detailPic);

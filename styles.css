@@ -4,12 +4,12 @@
 }
 
 body {
-    background-color: rgb(255, 239, 239);
+    background-color: rgb(253, 247, 247);
 }
 
 .page-grid {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3.5fr 2fr;
 }
 
 .pokegrid {
@@ -38,16 +38,15 @@ h1 {
 
 h4 {
     margin-left: 150px;
-    font-family: Arial;
+    font-family: monospace;
 }  
 
 p {
-    font-family: Arial;
+    font-family: monospace;
 }
 
 p:hover {
     background-color: gold;
-    font-family: Arial;
   }
 
 #bulbasaur, #ivysaur, #venusaur, #charmander, #charmeleon, #charizard, #squirtle, #wartortle, #blastoise, #caterpie, #metapod, #butterfree, #weedle, #kakuna, #beedrill, #pidgey, #pidgeotto, #pidgeot, #rattata, #raticate {
