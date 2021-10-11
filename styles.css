@@ -29,6 +29,10 @@ body {
     margin-right: 150px;
 }
 
+#detail-img {
+    max-height: 300px;
+}
+
 h1 {
     font-family: pokemon;
     margin-left: 150px;
