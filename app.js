@@ -1,4 +1,8 @@
 const url = "https://pokeapi.co/api/v2/pokemon/";
+
+const playButton = document.getElementById("play");
+playButton.disabled = true;
+
 const nameElem = document.getElementById("name");
 const baseXpElem = document.getElementById("basexp");
 const heightElem = document.getElementById("height");
@@ -8,6 +12,7 @@ const detailPic = document.getElementById("detail-img");
 const typesElem = document.getElementById("types");
 
 let id;
+let gameArr = [];
 
 async function getPokemon() {
   try {
@@ -41,9 +46,9 @@ for (let p of pokemon) {
   pokeGrid.appendChild(pokeDiv);
 }
 
-// click on pokemon to get height, weight, nature
+// mouseover pokemon to display basic stats
 document.querySelectorAll(".pokemon").forEach((item) => {
-  item.addEventListener("click", async function (e) {
+  item.addEventListener("mouseover", async function (e) {
     try {
       let str = item.firstChild.src.split("/")[8];
       id = str.substring(0, str.indexOf("."));
@@ -76,4 +81,37 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       console.error(err);
     }
   });
+});
+
+// click on 8 pokemon to include them in the memory game
+document.querySelectorAll(".pokemon").forEach((item) => {
+  item.addEventListener(
+    "click",
+    async function (e) {
+      try {
+        // store ID of clicked pokemon
+        let str = item.firstChild.src.split("/")[8];
+        id = Number(str.substring(0, str.indexOf(".")));
+        if (gameArr.length < 8) {
+          gameArr.push(id);
+          this.style.backgroundColor = "rgb(32, 211, 235)";
+        }
+        if (gameArr.length === 8) {
+          playButton.disabled = false;
+        }
+        // this.style.backgroundColor = "rgb(32, 211, 235)";
+        console.log(gameArr);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    { once: true }
+  );
+});
+
+// play game button
+playButton.addEventListener("click", async function (e) {
+  // poke grid disappears;
+  // 4x4 grid appears, cards flipped face down
+  // playButton.disabled = true;
 });
