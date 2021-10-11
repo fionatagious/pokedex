@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: rgb(253, 247, 247);
+    background-color: rgb(255, 246, 246);
 }
 
 .page-grid {
@@ -23,7 +23,7 @@ body {
 
 .poke-detail {
     background-color: rgb(255, 240, 152);
-    padding-left: 25px;
+    padding-left: 50px;
     padding-top: 25px;
     border-radius: 30px;
     margin-right: 150px;
@@ -35,6 +35,11 @@ h1 {
     color: #3B4CCA;
     margin-top: 70px;
   }
+
+h2 {
+    font-family: pokemon;
+    color: black;
+  } 
 
 h4 {
     margin-left: 150px;
