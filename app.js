@@ -73,7 +73,7 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       baseStatElem.innerHTML = `<strong>Base Stat: </strong>${baseStat}`;
       typesElem.innerHTML = `<strong>Types: </strong>${types_str}`;
 
-      detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
+      detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
       document.querySelector(".poke-detail").appendChild(detailPic);
     } catch (err) {
       console.error(err);
