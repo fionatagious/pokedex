@@ -1,6 +1,5 @@
 const url = "https://pokeapi.co/api/v2/pokemon/";
 const nameElem = document.getElementById("name");
-const orderElem = document.getElementById("order");
 const baseXpElem = document.getElementById("basexp");
 const heightElem = document.getElementById("height");
 const weightElem = document.getElementById("weight");
@@ -53,25 +52,23 @@ document.querySelectorAll(".pokemon").forEach((item) => {
 
       // get characteristics from API
       let name = detail.name;
-      let order = detail.order;
       let basexp = detail.base_experience;
       let height = detail.height;
       let weight = detail.weight;
       let baseStat = detail.stats[0].base_stat;
 
-      let types_str = "";
+      let typesStr = "";
       for (let i = 0; i < detail.types.length; i++) {
-        types_str = types_str.concat(detail.types[i].type.name, " ");
+        typesStr = typesStr.concat(detail.types[i].type.name, " ");
       }
 
       // inject into HTML elements
       nameElem.innerHTML = `${name}`;
-      orderElem.innerHTML = `<strong>Order: </strong>${order}`;
       baseXpElem.innerHTML = `<strong>Base Experience: </strong>${basexp}`;
       heightElem.innerHTML = `<strong>Height: </strong>${height}`;
       weightElem.innerHTML = `<strong>Weight: </strong>${weight}`;
       baseStatElem.innerHTML = `<strong>Base Stat: </strong>${baseStat}`;
-      typesElem.innerHTML = `<strong>Types: </strong>${types_str}`;
+      typesElem.innerHTML = `<strong>Types: </strong>${typesStr}`;
 
       detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
       document.querySelector(".poke-detail").appendChild(detailPic);
