@@ -10,10 +10,13 @@ const weightElem = document.getElementById("weight");
 const baseStatElem = document.getElementById("stats");
 const detailPic = document.getElementById("detail-img");
 const typesElem = document.getElementById("types");
+
 const gameGrid = document.getElementById("game-grid");
 
 let id;
 let gameSet = new Set();
+let cardArray = [];
+let guessArray = [];
 
 async function getPokemon() {
   try {
@@ -31,6 +34,8 @@ const pokeGrid = document.querySelector(".pokegrid");
 
 // pokemon is an array of pokemon objects!
 for (let p of pokemon) {
+  let pokeDivContainer = document.createElement("div");
+  pokeDivContainer.className = "pokediv-cont";
   let pokeDiv = document.createElement("div");
   pokeDiv.className = "pokemon";
   pokeDiv.id = p.name; // create pokemon-specific id, e.g. "bulbasaur"
@@ -44,7 +49,8 @@ for (let p of pokemon) {
 
   pokeDiv.appendChild(pokePic);
   pokeDiv.appendChild(pokeName);
-  pokeGrid.appendChild(pokeDiv);
+  pokeDivContainer.appendChild(pokeDiv);
+  pokeGrid.appendChild(pokeDivContainer);
 }
 
 // mouseover pokemon to display basic stats
@@ -111,6 +117,7 @@ document.querySelectorAll(".pokemon").forEach((item) => {
           this.style.backgroundColor = "powderblue";
         }
       }
+      cardArray = [...Array.from(gameSet), ...Array.from(gameSet)];
       // this.style.backgroundColor = "rgb(32, 211, 235)";
     } catch (err) {
       console.error(err);
@@ -121,28 +128,36 @@ document.querySelectorAll(".pokemon").forEach((item) => {
 playButton.addEventListener("click", async function (e) {
   try {
     playButton.disabled = true;
-    let removeDetail = document.getElementById("poke-detail");
-    let removePokedex = document.querySelector(".pokegrid");
+    const removeDetail = document.getElementById("poke-detail");
+    const removePokedex = document.querySelector(".pokegrid");
     removeDetail.parentNode.removeChild(removeDetail);
     removePokedex.parentNode.removeChild(removePokedex);
 
-    console.log(gameSet);
-    // create a 4x4 grid of rectangles (16 total)
-    for (let card of gameSet) {
-      console.log(card);
+    // shuffle
+    cardArray.sort(() => 0.5 - Math.random());
 
-      for (let i = 0; i < 2; i++) {
-        let gameCard = document.createElement("div");
-        gameCard.className = "card";
-        // gameCard.id = card;
-        let gamePic = document.createElement("img");
-        gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${card}.png`;
-        gameCard.appendChild(gamePic);
-        gameGrid.appendChild(gameCard);
-      }
+    for (let card of cardArray) {
+      const gameCard = document.createElement("div");
+      gameCard.className = "card";
+      gameCard.setAttribute("pokemon-id", card);
+      const gamePic = document.createElement("img");
+      gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${card}.png`;
+
+      gameCard.appendChild(gamePic);
+      gameGrid.appendChild(gameCard);
     }
-    // make 2 of each of the 8 selected appear in the grid
   } catch (err) {
     console.error(err);
   }
+});
+
+document.querySelectorAll(".card").forEach((item) => {
+  item.addEventListener("click", async function (e) {
+    try {
+      // const guessArray.push()
+      console.log(guess);
+    } catch (err) {
+      console.error(err);
+    }
+  });
 });
