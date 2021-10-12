@@ -21,7 +21,7 @@ body {
     margin-left: 150px;
 }
 
-.poke-detail {
+#poke-detail {
     background-color: rgb(255, 240, 152);
     padding-left: 50px;
     padding-top: 25px;
@@ -72,4 +72,27 @@ p:hover {
     grid-template-rows: 2fr 1fr;
     text-align: center;
     justify-content: center;
+}
+
+#game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    width: 80%;
+    margin-left: 150px;
+}
+
+.card {
+    background-color: gold;
+    justify-content: center;
+    border-style: ridge;
+    border-color: #3B4CCA; 
+    border-radius: 20px;
+}
+
+.card img {
+    width: 100%;
+    max-width: 200px;
 }

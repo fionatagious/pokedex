@@ -10,6 +10,7 @@ const weightElem = document.getElementById("weight");
 const baseStatElem = document.getElementById("stats");
 const detailPic = document.getElementById("detail-img");
 const typesElem = document.getElementById("types");
+const gameGrid = document.getElementById("game-grid");
 
 let id;
 let gameSet = new Set();
@@ -76,7 +77,7 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       typesElem.innerHTML = `<strong>Types: </strong>${typesStr}`;
 
       detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-      document.querySelector(".poke-detail").appendChild(detailPic);
+      document.getElementById("poke-detail").appendChild(detailPic);
     } catch (err) {
       console.error(err);
     }
@@ -85,48 +86,62 @@ document.querySelectorAll(".pokemon").forEach((item) => {
 
 // click on 8 pokemon to include them in the memory game
 document.querySelectorAll(".pokemon").forEach((item) => {
-  item.addEventListener(
-    "click",
-    async function (e) {
-      try {
-        let str = item.firstChild.src.split("/")[8];
-        id = Number(str.substring(0, str.indexOf(".")));
+  item.addEventListener("click", async function (e) {
+    try {
+      let str = item.firstChild.src.split("/")[8];
+      id = Number(str.substring(0, str.indexOf(".")));
 
-        if (gameSet.has(id)) {
-          gameSet.delete(id);
-          this.style.backgroundColor = "powderblue";
+      if (gameSet.has(id)) {
+        gameSet.delete(id);
+        this.style.backgroundColor = "powderblue";
+        if (gameSet.size === 8) {
+          playButton.disabled = false;
+        } else {
+          playButton.disabled = true;
+        }
+      } else {
+        if (gameSet.size < 8) {
+          gameSet.add(id);
+          this.style.backgroundColor = "rgb(32, 211, 235)";
           if (gameSet.size === 8) {
             playButton.disabled = false;
-          } else {
-            playButton.disabled = true;
+            playButton.style.backgroundColor = "rgb(255, 138, 138)";
           }
         } else {
-          if (gameSet.size < 8) {
-            gameSet.add(id);
-            this.style.backgroundColor = "rgb(32, 211, 235)";
-            if (gameSet.size === 8) {
-              playButton.disabled = false;
-              playButton.style.backgroundColor = "rgb(255, 138, 138)";
-            }
-          } else {
-            this.style.backgroundColor = "powderblue";
-          }
+          this.style.backgroundColor = "powderblue";
         }
-
-        // this.style.backgroundColor = "rgb(32, 211, 235)";
-        console.log(gameSet);
-      } catch (err) {
-        console.error(err);
       }
+      // this.style.backgroundColor = "rgb(32, 211, 235)";
+    } catch (err) {
+      console.error(err);
     }
-    // { once: true } // listener automatically removed when invoked once for each item
-  );
+  });
 });
 
 playButton.addEventListener("click", async function (e) {
   try {
-    console.log("game play begins");
+    playButton.disabled = true;
+    let removeDetail = document.getElementById("poke-detail");
+    let removePokedex = document.querySelector(".pokegrid");
+    removeDetail.parentNode.removeChild(removeDetail);
+    removePokedex.parentNode.removeChild(removePokedex);
+
     console.log(gameSet);
+    // create a 4x4 grid of rectangles (16 total)
+    for (let card of gameSet) {
+      console.log(card);
+
+      for (let i = 0; i < 2; i++) {
+        let gameCard = document.createElement("div");
+        gameCard.className = "card";
+        // gameCard.id = card;
+        let gamePic = document.createElement("img");
+        gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${card}.png`;
+        gameCard.appendChild(gamePic);
+        gameGrid.appendChild(gameCard);
+      }
+    }
+    // make 2 of each of the 8 selected appear in the grid
   } catch (err) {
     console.error(err);
   }
