@@ -33,6 +33,13 @@ body {
     max-height: 300px;
 }
 
+#play {
+    border-radius: 30px;
+    margin-right: 150px;
+    margin-bottom: 20px;
+    max-width: 200px;
+}
+
 h1 {
     font-family: pokemon;
     margin-left: 150px;

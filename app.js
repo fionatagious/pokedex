@@ -89,27 +89,30 @@ document.querySelectorAll(".pokemon").forEach((item) => {
     "click",
     async function (e) {
       try {
-        // store ID of clicked pokemon
         let str = item.firstChild.src.split("/")[8];
         id = Number(str.substring(0, str.indexOf(".")));
 
-        if (!gameSet.has(id)) {
-          gameSet.add(id);
-          this.style.backgroundColor = "rgb(32, 211, 235)";
+        if (gameSet.has(id)) {
+          gameSet.delete(id);
+          this.style.backgroundColor = "powderblue";
           if (gameSet.size === 8) {
             playButton.disabled = false;
           } else {
             playButton.disabled = true;
           }
         } else {
-          gameSet.delete(id);
-          this.style.backgroundColor = "powderblue";
-          if (gameSet.size !== 8) {
-            playButton.disabled = true;
+          if (gameSet.size < 8) {
+            gameSet.add(id);
+            this.style.backgroundColor = "rgb(32, 211, 235)";
+            if (gameSet.size === 8) {
+              playButton.disabled = false;
+              playButton.style.backgroundColor = "rgb(255, 138, 138)";
+            }
           } else {
-            playButton.disabled = false;
+            this.style.backgroundColor = "powderblue";
           }
         }
+
         // this.style.backgroundColor = "rgb(32, 211, 235)";
         console.log(gameSet);
       } catch (err) {
@@ -123,6 +126,7 @@ document.querySelectorAll(".pokemon").forEach((item) => {
 playButton.addEventListener("click", async function (e) {
   try {
     console.log("game play begins");
+    console.log(gameSet);
   } catch (err) {
     console.error(err);
   }
