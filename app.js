@@ -12,7 +12,7 @@ const detailPic = document.getElementById("detail-img");
 const typesElem = document.getElementById("types");
 
 let id;
-let gameArr = [];
+let gameSet = new Set();
 
 async function getPokemon() {
   try {
@@ -92,19 +92,38 @@ document.querySelectorAll(".pokemon").forEach((item) => {
         // store ID of clicked pokemon
         let str = item.firstChild.src.split("/")[8];
         id = Number(str.substring(0, str.indexOf(".")));
-        if (gameArr.length < 8) {
-          gameArr.push(id);
+
+        if (!gameSet.has(id)) {
+          gameSet.add(id);
           this.style.backgroundColor = "rgb(32, 211, 235)";
-        }
-        if (gameArr.length === 8) {
-          playButton.disabled = false;
+          if (gameSet.size === 8) {
+            playButton.disabled = false;
+          } else {
+            playButton.disabled = true;
+          }
+        } else {
+          gameSet.delete(id);
+          this.style.backgroundColor = "powderblue";
+          if (gameSet.size !== 8) {
+            playButton.disabled = true;
+          } else {
+            playButton.disabled = false;
+          }
         }
         // this.style.backgroundColor = "rgb(32, 211, 235)";
-        console.log(gameArr);
+        console.log(gameSet);
       } catch (err) {
         console.error(err);
       }
-    },
-    { once: true }
+    }
+    // { once: true } // listener automatically removed when invoked once for each item
   );
+});
+
+playButton.addEventListener("click", async function (e) {
+  try {
+    console.log("game play begins");
+  } catch (err) {
+    console.error(err);
+  }
 });
