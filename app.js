@@ -2,6 +2,8 @@ const url = "https://pokeapi.co/api/v2/pokemon/";
 
 const playButton = document.getElementById("play");
 playButton.disabled = true;
+const playButtonColorEnabled = "rgb(255, 138, 138)";
+const spriteSelected = "rgb(32, 211, 235)";
 
 const nameElem = document.getElementById("name");
 const baseXpElem = document.getElementById("basexp");
@@ -20,72 +22,77 @@ let guessArray = [];
 
 async function getPokemon() {
   try {
-    let resp = await fetch(url);
-    let data = await resp.json();
+    const resp = await fetch(url);
+    const data = await resp.json();
     return data.results;
   } catch (err) {
     console.error(err);
   }
 }
 
-// but I thought async functions could only ever return a promise?? how does await break the expected behavior?
-const pokemon = await getPokemon();
+// await makes JS wait until that promise settles and returns its result
+const pokemonArray = await getPokemon();
 const pokeGrid = document.querySelector(".pokegrid");
 
-// pokemon is an array of pokemon objects!
-for (let p of pokemon) {
-  let pokeDivContainer = document.createElement("div");
-  pokeDivContainer.className = "pokediv-cont";
-  let pokeDiv = document.createElement("div");
-  pokeDiv.className = "pokemon";
-  pokeDiv.id = p.name; // create pokemon-specific id, e.g. "bulbasaur"
+const createPokeSprites = function (pokemonArray) {
+  for (let p of pokemonArray) {
+    const pokeDivContainer = document.createElement("div");
+    pokeDivContainer.className = "pokediv-cont";
+    const pokeDiv = document.createElement("div");
+    pokeDiv.className = "pokemon";
+    pokeDiv.id = p.name; // create pokemon-specific id, e.g. "bulbasaur"
 
-  id = p.url.split("/")[6];
-  let pokePic = document.createElement("img");
-  pokePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+    id = p.url.split("/")[6]; // made assumption: url doesn't change; write tests
+    const pokePic = document.createElement("img");
+    pokePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
-  let pokeName = document.createElement("p");
-  pokeName.innerText = p.name;
+    const pokeName = document.createElement("p");
+    pokeName.innerText = p.name;
 
-  pokeDiv.appendChild(pokePic);
-  pokeDiv.appendChild(pokeName);
-  pokeDivContainer.appendChild(pokeDiv);
-  pokeGrid.appendChild(pokeDivContainer);
-}
+    pokeDiv.appendChild(pokePic);
+    pokeDiv.appendChild(pokeName);
+    pokeDivContainer.appendChild(pokeDiv);
+    pokeGrid.appendChild(pokeDivContainer);
+  }
+};
 
-// mouseover pokemon to display basic stats
+createPokeSprites(pokemonArray);
+
+const detailGenerator = async function (detail) {
+  const name = detail.name;
+  const basexp = detail.base_experience;
+  const height = detail.height;
+  const weight = detail.weight;
+  const baseStat = detail.stats[0].base_stat;
+
+  let typesStr = "";
+  for (let i = 0; i < detail.types.length; i++) {
+    typesStr = typesStr.concat(detail.types[i].type.name, " ");
+  }
+
+  nameElem.innerHTML = `${name}`;
+  baseXpElem.innerHTML = `<strong>Base Experience: </strong>${basexp}`;
+  heightElem.innerHTML = `<strong>Height: </strong>${height}`;
+  weightElem.innerHTML = `<strong>Weight: </strong>${weight}`;
+  baseStatElem.innerHTML = `<strong>Base Stat: </strong>${baseStat}`;
+  typesElem.innerHTML = `<strong>Types: </strong>${typesStr}`;
+
+  detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  document.getElementById("poke-detail").appendChild(detailPic);
+};
+
+// mouseover pokemon to display basic pokemon stats in detail panel
 document.querySelectorAll(".pokemon").forEach((item) => {
   item.addEventListener("mouseover", async function (e) {
     try {
-      let str = item.firstChild.src.split("/")[8];
+      const str = item.firstChild.src.split("/")[8];
       id = str.substring(0, str.indexOf("."));
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
       const detail = await response.json();
 
-      // get characteristics from API
-      let name = detail.name;
-      let basexp = detail.base_experience;
-      let height = detail.height;
-      let weight = detail.weight;
-      let baseStat = detail.stats[0].base_stat;
-
-      let typesStr = "";
-      for (let i = 0; i < detail.types.length; i++) {
-        typesStr = typesStr.concat(detail.types[i].type.name, " ");
-      }
-
-      // inject into HTML elements
-      nameElem.innerHTML = `${name}`;
-      baseXpElem.innerHTML = `<strong>Base Experience: </strong>${basexp}`;
-      heightElem.innerHTML = `<strong>Height: </strong>${height}`;
-      weightElem.innerHTML = `<strong>Weight: </strong>${weight}`;
-      baseStatElem.innerHTML = `<strong>Base Stat: </strong>${baseStat}`;
-      typesElem.innerHTML = `<strong>Types: </strong>${typesStr}`;
-
-      detailPic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-      document.getElementById("poke-detail").appendChild(detailPic);
+      detailGenerator(detail);
     } catch (err) {
-      console.error(err);
+      console.error(err); // custom error handling- specific errors, e.g. API down, url broken - could validate
     }
   });
 });
@@ -96,7 +103,8 @@ document.querySelectorAll(".pokemon").forEach((item) => {
     try {
       let str = item.firstChild.src.split("/")[8];
       id = Number(str.substring(0, str.indexOf(".")));
-
+      // create toggle function that uses discrete states of button?
+      // setAttribute()?
       if (gameSet.has(id)) {
         gameSet.delete(id);
         this.style.backgroundColor = "powderblue";
@@ -108,10 +116,10 @@ document.querySelectorAll(".pokemon").forEach((item) => {
       } else {
         if (gameSet.size < 8) {
           gameSet.add(id);
-          this.style.backgroundColor = "rgb(32, 211, 235)";
+          this.style.backgroundColor = spriteSelected;
           if (gameSet.size === 8) {
             playButton.disabled = false;
-            playButton.style.backgroundColor = "rgb(255, 138, 138)";
+            playButton.style.backgroundColor = playButtonColorEnabled;
           }
         } else {
           this.style.backgroundColor = "powderblue";
@@ -125,15 +133,19 @@ document.querySelectorAll(".pokemon").forEach((item) => {
   });
 });
 
+const resetPage = function () {
+  playButton.disabled = true;
+  const removeDetail = document.getElementById("poke-detail");
+  const removePokedex = document.querySelector(".pokegrid");
+  removeDetail.parentNode.removeChild(removeDetail);
+  removePokedex.parentNode.removeChild(removePokedex);
+};
+
 playButton.addEventListener("click", async function (e) {
   try {
-    playButton.disabled = true;
-    const removeDetail = document.getElementById("poke-detail");
-    const removePokedex = document.querySelector(".pokegrid");
-    removeDetail.parentNode.removeChild(removeDetail);
-    removePokedex.parentNode.removeChild(removePokedex);
+    resetPage();
 
-    // shuffle
+    // shuffle - another function; could write a unit test
     cardArray.sort(() => 0.5 - Math.random());
 
     for (let card of cardArray) {
@@ -154,8 +166,11 @@ playButton.addEventListener("click", async function (e) {
 document.querySelectorAll(".card").forEach((item) => {
   item.addEventListener("click", async function (e) {
     try {
-      // const guessArray.push()
-      console.log(guess);
+      console.log("yes");
+      console.log(item);
+      // const id = item.getAttribute("pokemon-id");
+      // guessArray.push(item.pokemon-id);
+      // console.log(guessArray);
     } catch (err) {
       console.error(err);
     }
