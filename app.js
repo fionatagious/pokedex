@@ -3,7 +3,11 @@ const url = "https://pokeapi.co/api/v2/pokemon/";
 const playButton = document.getElementById("play");
 playButton.disabled = true;
 const playButtonColorEnabled = "rgb(255, 138, 138)";
+
+const pokeGrid = document.querySelector(".pokegrid");
+
 const spriteSelected = "rgb(32, 211, 235)";
+const spriteDeselected = "#fff";
 
 const nameElem = document.getElementById("name");
 const baseXpElem = document.getElementById("basexp");
@@ -32,7 +36,6 @@ async function getPokemon() {
 
 // await makes JS wait until that promise settles and returns its result
 const pokemonArray = await getPokemon();
-const pokeGrid = document.querySelector(".pokegrid");
 
 const createPokeSprites = function (pokemonArray) {
   for (let p of pokemonArray) {
@@ -81,7 +84,7 @@ const detailGenerator = async function (detail) {
   document.getElementById("poke-detail").appendChild(detailPic);
 };
 
-// mouseover pokemon to display basic pokemon stats in detail panel
+// mouseover sprites: display stats in detail panel
 document.querySelectorAll(".pokemon").forEach((item) => {
   item.addEventListener("mouseover", async function (e) {
     try {
@@ -97,36 +100,40 @@ document.querySelectorAll(".pokemon").forEach((item) => {
   });
 });
 
+const spriteSelectToggle = function (item, id) {
+  if (gameSet.has(id)) {
+    gameSet.delete(id);
+    item.style.backgroundColor = "powderblue";
+    if (gameSet.size === 8) {
+      playButton.disabled = false;
+    } else {
+      playButton.disabled = true;
+      playButton.style.backgroundColor = spriteDeselected;
+    }
+  } else {
+    if (gameSet.size < 8) {
+      gameSet.add(id);
+      item.style.backgroundColor = spriteSelected;
+      if (gameSet.size === 8) {
+        playButton.disabled = false;
+        playButton.style.backgroundColor = playButtonColorEnabled;
+      }
+    } else {
+      item.style.backgroundColor = "powderblue";
+    }
+  }
+};
+
 // click on 8 pokemon to include them in the memory game
 document.querySelectorAll(".pokemon").forEach((item) => {
   item.addEventListener("click", async function (e) {
     try {
       let str = item.firstChild.src.split("/")[8];
       id = Number(str.substring(0, str.indexOf(".")));
-      // create toggle function that uses discrete states of button?
-      // setAttribute()?
-      if (gameSet.has(id)) {
-        gameSet.delete(id);
-        this.style.backgroundColor = "powderblue";
-        if (gameSet.size === 8) {
-          playButton.disabled = false;
-        } else {
-          playButton.disabled = true;
-        }
-      } else {
-        if (gameSet.size < 8) {
-          gameSet.add(id);
-          this.style.backgroundColor = spriteSelected;
-          if (gameSet.size === 8) {
-            playButton.disabled = false;
-            playButton.style.backgroundColor = playButtonColorEnabled;
-          }
-        } else {
-          this.style.backgroundColor = "powderblue";
-        }
-      }
+
+      spriteSelectToggle(item, id);
+
       cardArray = [...Array.from(gameSet), ...Array.from(gameSet)];
-      // this.style.backgroundColor = "rgb(32, 211, 235)";
     } catch (err) {
       console.error(err);
     }
@@ -167,10 +174,10 @@ document.querySelectorAll(".card").forEach((item) => {
   item.addEventListener("click", async function (e) {
     try {
       console.log("yes");
-      console.log(item);
-      // const id = item.getAttribute("pokemon-id");
+      // console.log(item);
+      const elem = item.getAttribute("pokemon-id");
       // guessArray.push(item.pokemon-id);
-      // console.log(guessArray);
+      console.log(elem);
     } catch (err) {
       console.error(err);
     }
