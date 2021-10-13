@@ -6,3 +6,4 @@ Pokedex:
 <img src="https://github.com/fionatagious/pokedex/blob/master/images/pokegrid.png" alt="alt text" title="pokegrid"/>
 
 Memory Game:
+<img src="https://github.com/fionatagious/pokedex/blob/master/images/memory-game.png" alt="alt text" title="memory-game"/>
