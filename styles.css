@@ -1,10 +1,12 @@
 @font-face {
     font-family: pokemon;
-    src: url(PokemonHollowNormal-pyPZ.ttf);
+    src: url(fonts/PokemonHollowNormal-pyPZ.ttf);
 }
 
 body {
     background-color: rgb(255, 250, 240);
+    /* background-color: rgb(199, 195, 187); */
+
 }
 
 .page-grid {
@@ -95,7 +97,7 @@ p:hover {
     justify-content: center;
 }
 
-#game-grid {
+.game-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
@@ -111,6 +113,9 @@ p:hover {
     border-style: ridge;
     border-color: #3B4CCA; 
     border-radius: 20px;
+    width: 100%;
+    width: 200px;
+    height: 200px;
 }
 
 .card img {

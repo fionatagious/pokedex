@@ -3,6 +3,8 @@ const url = "https://pokeapi.co/api/v2/pokemon/";
 const playButton = document.getElementById("play");
 playButton.disabled = true;
 const playButtonColorEnabled = "rgb(255, 138, 138)";
+const playButtonColorDisabled = "rgba(255,255,255,0.5)";
+playButton.style.backgroundColor = playButtonColorDisabled;
 
 const pokeGrid = document.querySelector(".pokegrid");
 
@@ -16,8 +18,6 @@ const weightElem = document.getElementById("weight");
 const baseStatElem = document.getElementById("stats");
 const detailPic = document.getElementById("detail-img");
 const typesElem = document.getElementById("types");
-
-const gameGrid = document.getElementById("game-grid");
 
 let id;
 let gameSet = new Set();
@@ -142,44 +142,39 @@ document.querySelectorAll(".pokemon").forEach((item) => {
 
 const resetPage = function () {
   playButton.disabled = true;
+  playButton.style.backgroundColor = playButtonColorDisabled;
   const removeDetail = document.getElementById("poke-detail");
   const removePokedex = document.querySelector(".pokegrid");
   removeDetail.parentNode.removeChild(removeDetail);
   removePokedex.parentNode.removeChild(removePokedex);
 };
 
+const createGameCards = function () {
+  const gameGrid = document.querySelector(".game-grid");
+
+  document.querySelectorAll(".card").forEach((item) => {
+    const pokemonId = cardArray.pop();
+    item.setAttribute("pokemon-id", pokemonId);
+
+    // const gamePic = document.createElement("img");
+    // gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+    // gamePic.style.opacity = 0;
+    // gameCard.style.backgroundColor = "#3B4CCA"; // style this later
+    // gameCard.appendChild(gamePic);
+  });
+};
+
 playButton.addEventListener("click", async function (e) {
   try {
-    resetPage();
-
-    // shuffle - another function; could write a unit test
+    // shuffle selected cards; could write a unit test
     cardArray.sort(() => 0.5 - Math.random());
 
-    for (let card of cardArray) {
-      const gameCard = document.createElement("div");
-      gameCard.className = "card";
-      gameCard.setAttribute("pokemon-id", card);
-      const gamePic = document.createElement("img");
-      gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${card}.png`;
+    // remove pokedex view
+    resetPage();
 
-      gameCard.appendChild(gamePic);
-      gameGrid.appendChild(gameCard);
-    }
+    // create game grid (cards face down)
+    createGameCards();
   } catch (err) {
     console.error(err);
   }
-});
-
-document.querySelectorAll(".card").forEach((item) => {
-  item.addEventListener("click", async function (e) {
-    try {
-      console.log("yes");
-      // console.log(item);
-      const elem = item.getAttribute("pokemon-id");
-      // guessArray.push(item.pokemon-id);
-      console.log(elem);
-    } catch (err) {
-      console.error(err);
-    }
-  });
 });
