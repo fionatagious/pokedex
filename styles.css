@@ -108,7 +108,8 @@ p:hover {
 }
 
 .card {
-    background-color: rgb(255, 224, 50);
+    /* background-color: rgb(255, 224, 50); */
+    background-color: #3B4CCA;
     justify-content: center;
     border-style: ridge;
     border-color: #3B4CCA; 

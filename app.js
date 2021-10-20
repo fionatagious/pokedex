@@ -153,14 +153,17 @@ const createGameCards = function () {
   const gameGrid = document.querySelector(".game-grid");
 
   document.querySelectorAll(".card").forEach((item) => {
+    console.log(item, cardArray);
     const pokemonId = cardArray.pop();
     item.setAttribute("pokemon-id", pokemonId);
 
-    // const gamePic = document.createElement("img");
-    // gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
-    // gamePic.style.opacity = 0;
-    // gameCard.style.backgroundColor = "#3B4CCA"; // style this later
-    // gameCard.appendChild(gamePic);
+    const gamePic = document.createElement("img");
+    gamePic.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+    item.appendChild(gamePic);
+  });
+
+  document.querySelectorAll(".card").forEach((item) => {
+    item.firstChild.style.display = "none";
   });
 };
 
@@ -177,4 +180,14 @@ playButton.addEventListener("click", async function (e) {
   } catch (err) {
     console.error(err);
   }
+});
+
+document.querySelectorAll(".card").forEach((item) => {
+  item.addEventListener("click", async function (e) {
+    try {
+      item.firstChild.style.display = "flex";
+    } catch (err) {
+      console.error(err);
+    }
+  });
 });
